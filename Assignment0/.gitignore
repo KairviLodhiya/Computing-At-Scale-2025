@@ -1,4 +1,3 @@
 *.o
-*.mtx
 testScript
 matrix_operations
