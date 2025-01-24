@@ -10,7 +10,9 @@ This project implements a C++ function to compute the product of a dense matrix 
 ## File Structure
 
 - **matrixMultiply.hpp**: Header file with the function declarations.
-- **matrixMultiply.cpp**: Implementation file with the function definition to multiply a vector and a matrix and multiply a matrix and a matrix..
+- **matrixMultiply.cpp**: Implementation file with the function definition to multiply a vector and a matrix and multiply a matrix and a matrix.
+- **readwriteMMfiles.hpp**: Header file with function declarations for reading and writing files.
+- **readwriteMMfiles.cpp**: Implementation file with function definition to read and write a Matrix Multiply matrix.
 - **mmio.h**: Header file to read and write Matrix Market files.
 - **mmio.c**: Function file to read and write Matrix Market files.
 - **testScript.cpp**: Testing files for checking the answer.

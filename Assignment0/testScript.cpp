@@ -2,56 +2,10 @@
 #include <fstream>
 #include <vector>
 #include "matrixMultiply.hpp"
+extern "C" {
 #include "mmio.h"
-
-void readMatrixMarketFile(const std::string &filename, std::vector<std::vector<double>> &matrix, std::vector<double> &vector) {
-    MM_typecode matcode;
-    FILE *f;
-    int M, N;
-
-    // Open the file
-    if ((f = fopen(filename.c_str(), "r")) == NULL) {
-        throw std::runtime_error("Could not open file: " + filename);
-    }
-
-    // Read the Matrix Market banner
-    if (mm_read_banner(f, &matcode) != 0) {
-        throw std::runtime_error("Could not read Matrix Market banner.");
-    }
-
-    // Check if it's a matrix or a vector
-    if (!mm_is_matrix(matcode) || (!mm_is_dense(matcode) && !mm_is_array(matcode))) {
-        throw std::runtime_error("Only dense matrices or vectors are supported.");
-    }
-
-    // Read matrix size
-    mm_read_mtx_array_size(f, &M, &N);
-
-    // If it's a matrix
-    if (M > 1 && N > 1) {
-        matrix.resize(M, std::vector<double>(N, 0.0));
-        // Read matrix values
-        for (int i = 0; i < M; ++i) {
-            for (int j = 0; j < N; ++j) {
-                if (fscanf(f, "%lf", &matrix[i][j]) != 1) {
-                    throw std::runtime_error("Error reading matrix values.");
-                }
-            }
-        }
-    }
-    // If it's a vector (matrix with a single row or column)
-    else if (M == 1 || N == 1) {
-        vector.resize(std::max(M, N), 0.0);
-        // Read vector values
-        for (int i = 0; i < std::max(M, N); ++i) {
-            if (fscanf(f, "%lf", &vector[i]) != 1) {
-                throw std::runtime_error("Error reading vector values.");
-            }
-        }
-    }
-
-    fclose(f);
 }
+#include "readwriteMMfiles.cpp"
 
 bool areMatricesEqual(const std::vector<std::vector<double>>& m1, 
                       const std::vector<std::vector<double>>& m2, 
@@ -96,8 +50,8 @@ void testMatrixOperations() {
     std::vector<double> vector1;
 
     // Test case 1: Matrix-Vector multiplication
-    readMatrixMarketFile("matrix1.mtx", matrix1, vector1);  // Read matrix1 and check if its matrix or vector
-    readMatrixMarketFile("vector1.mtx", matrix1, vector1);  // Read vector1 and check if its matrix or vector
+    readMatrixMarketFile("matrix1.mtx", matrix1);  // Read matrix1 and check if its matrix or vector
+   // readMatrixMarketFile("vector1.mtx", vector1);  // Read vector1 and check if its matrix or vector
 
     // Perform matrix-vector multiplication
     std::vector<double> result1 = matrixVectorProduct(matrix1, vector1);
@@ -110,7 +64,7 @@ void testMatrixOperations() {
     std::cout << "Matrix-Vector Multiplication: " << (passed1 ? "PASS" : "FAIL") << std::endl;
 
     // Test case 2: Matrix-Matrix multiplication
-    readMatrixMarketFile("matrix2.mtx", matrix2, vector1);  // Read matrix2 and check if its matrix or vector
+    readMatrixMarketFile("matrix2.mtx", matrix2);  // Read matrix2 and check if its matrix or vector
 
     // Perform matrix-matrix multiplication
     std::vector<std::vector<double>> result2 = matrixMatrixProduct(matrix1, matrix2);

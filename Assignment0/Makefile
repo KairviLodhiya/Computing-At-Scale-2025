@@ -7,7 +7,7 @@ CXXFLAGS = -Wall -g
 TARGET = matrix_operations
 
 # Object files
-OBJECTS = main.o matrixMultiply.o mmio.o
+OBJECTS = main.o matrixMultiply.o mmio.o readwriteMMfiles.o
 
 # Default target: compile and link the program
 $(TARGET): $(OBJECTS)
@@ -20,6 +20,10 @@ main.o: main.cpp
 # Compile matrixMatrixProduct
 matrixMatrixProduct.o: matrixMultiply.cpp
 	$(CXX) $(CXXFLAGS) -c matrixMultiply.cpp
+
+# Compile matrixMatrixProduct
+readwriteMMfiles.o: readwriteMMfiles.cpp
+	$(CXX) $(CXXFLAGS) -c readwriteMMfiles.cpp
 
 # Compile mmio
 mmio.o: mmio.c
