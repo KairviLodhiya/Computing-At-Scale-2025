@@ -7,7 +7,7 @@ CXXFLAGS = -Wall -g
 TARGET = matrix_operations
 
 # Object files
-OBJECTS = main.o matrixVectorProduct.o matrixMatrixProduct.o mmio.o
+OBJECTS = main.o matrixMultiply.o mmio.o
 
 # Default target: compile and link the program
 $(TARGET): $(OBJECTS)
@@ -17,13 +17,9 @@ $(TARGET): $(OBJECTS)
 main.o: main.cpp
 	$(CXX) $(CXXFLAGS) -c main.cpp
 
-# Compile matrixVectorProduct
-matrixVectorProduct.o: matrixVectorProduct.cpp
-	$(CXX) $(CXXFLAGS) -c matrixVectorProduct.cpp
-
 # Compile matrixMatrixProduct
-matrixMatrixProduct.o: matrixMatrixProduct.cpp
-	$(CXX) $(CXXFLAGS) -c matrixMatrixProduct.cpp
+matrixMatrixProduct.o: matrixMultiply.cpp
+	$(CXX) $(CXXFLAGS) -c matrixMultiply.cpp
 
 # Compile mmio
 mmio.o: mmio.c

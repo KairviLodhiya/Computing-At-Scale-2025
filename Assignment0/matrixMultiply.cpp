@@ -1,8 +1,7 @@
-#include "header.hpp"
+#include "matrixMultiply.hpp"
 #include <iostream>
 #include <vector>
 
-using namespace std;
 
 std::vector<std::vector<double>> matrixMatrixProduct(const std::vector<std::vector<double>>& mat1, const std::vector<std::vector<double>>& mat2) {
 
@@ -29,4 +28,19 @@ std::vector<std::vector<double>> matrixMatrixProduct(const std::vector<std::vect
     }
 
     return mat3;
+}
+
+std::vector<double> matrixVectorProduct(const std::vector<std::vector<double>>& matrix, const std::vector<double>& vec) {
+    if (matrix.empty() || matrix[0].size() != vec.size()) {
+        throw std::invalid_argument("The number of columns in the matrix must equal the number of elements in the vector.");
+    }
+
+    std::vector<double> result(matrix.size(), 0.0);
+    for (size_t i = 0; i < matrix.size(); ++i) {
+        for (size_t j = 0; j < vec.size(); ++j) {
+            result[i] += matrix[i][j] * vec[j];
+        }
+    }
+
+    return result;
 }

@@ -1,13 +1,10 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include "matrixMultiply.hpp"   
 extern "C" {
 #include "mmio.h"
 }
-
-// Include the function declarations
-std::vector<double> matrixVectorProduct(const std::vector<std::vector<double>> &matrix, const std::vector<double> &vec);
-std::vector<std::vector<double>> matrixMatrixProduct(const std::vector<std::vector<double>> &mat1, const std::vector<std::vector<double>> &mat2);
 
 /* Reading matrix market file function */
 void readMatrixMarketFile(const std::string &filename, std::vector<std::vector<double>> &matrix) {
@@ -105,8 +102,9 @@ try {
             if (vectorMatrix[0].size() != 1) {
                 throw std::runtime_error("The second input must be a single-column matrix (vector).");
             }
-            for (const auto &row : vectorMatrix) {
-                vector.push_back(row[0]);
+            vector.resize(vectorMatrix.size()); // Preallocate space for the vector
+            for (size_t i = 0; i < vectorMatrix.size(); ++i) {
+                vector[i] = vectorMatrix[i][0]; // Directly assign the value
             }
 
             std::vector<double> result = matrixVectorProduct(matrix, vector);
