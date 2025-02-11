@@ -1,2 +1,0 @@
-/usr/bin/ar qc libintegration_library.a CMakeFiles/integration_library.dir/numerical_integration.cpp.o
-/usr/bin/ranlib libintegration_library.a
