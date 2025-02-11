@@ -36,5 +36,5 @@ This project implements a C++ function to compute the product of a dense matrix 
 
 ## Examples to run
 
-matrix1.mtx matrix2.mtx 
+matrix1.mtx matrix2.mtx vector.mtx
 

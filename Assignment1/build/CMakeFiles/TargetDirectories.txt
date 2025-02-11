@@ -1,0 +1,5 @@
+/home/kairvilodhiya/MANE6965/computing-at-scale/Assignment1/build/CMakeFiles/integration_library.dir
+/home/kairvilodhiya/MANE6965/computing-at-scale/Assignment1/build/CMakeFiles/PolynomialIntegrate.dir
+/home/kairvilodhiya/MANE6965/computing-at-scale/Assignment1/build/CMakeFiles/unit_tests.dir
+/home/kairvilodhiya/MANE6965/computing-at-scale/Assignment1/build/CMakeFiles/edit_cache.dir
+/home/kairvilodhiya/MANE6965/computing-at-scale/Assignment1/build/CMakeFiles/rebuild_cache.dir
