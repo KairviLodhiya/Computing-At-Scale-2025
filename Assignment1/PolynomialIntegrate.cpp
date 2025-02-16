@@ -23,41 +23,73 @@ public:
 };
 
 int main(int argc, char* argv[]) {
-    if (argc < 8) {
-        std::cerr<< "Usage: " << argv[0] << " <method> <no. of points> <a> <b> <coeff1> <coeff2> <coeff3>  ";
-        return 1;
+    try {
+        if (argc < 8) {
+            throw std::runtime_error("Usage: " + std::string(argv[0]) + 
+                " <method> <no. of points> <a> <b> <coeff1> <coeff2> .... ");
+        }
+
+        std::string method = argv[1];
+        double n = std::stod(argv[2]);
+        double a = std::stod(argv[3]);
+        double b = std::stod(argv[4]);
+
+        // Ensure that a is smaller than b
+        if (a >= b) {
+            throw std::invalid_argument("Invalid integration limits: 'a' must be smaller than 'b'.");
+        }
+
+        // Ensure no negative numbers
+        if (n < 0) {
+            throw std::invalid_argument("Invalid input: 'n', 'a', and 'b' must be non-negative.");
+        }
+
+        std::vector<double> coefficients;
+
+        // Parse coefficients
+        for (int i = 5; i < argc; ++i) {
+            double coeff = std::stod(argv[i]);
+            if (coeff < 0) {
+                throw std::invalid_argument("Invalid input: Coefficients must be non-negative.");
+            }
+            coefficients.push_back(coeff);
+        }
+
+        PolynomialFunction poly(coefficients);
+        std::vector<double> points, weights;
+
+        // Select numerical integration method
+        if (method == "gauss_legendre") {
+            points = gaussLegendrePoints(n);
+            weights = gaussLegendreWeights(n);
+        } else if (method == "gauss_lobatto") {
+            points = gaussLobattoPoints(n);
+            weights = gaussLobattoWeights(n);
+        } else if (method == "chebychev") {
+            points = generateChebyshevFirstKindPoints(n);
+            weights = generateChebyshevFirstKindWeights(n);
+        } else {
+            throw std::invalid_argument("Unknown integration method: " + method);
+        }
+
+        NumericalIntegrator integrator(weights, points);
+        double result = integrator.integrate(poly, a, b);
+
+        std::cout << "Integral result: " << result << "\n";
+        
+    } catch (const std::invalid_argument& e) {
+        std::cerr << "Invalid argument error: " << e.what() << std::endl;
+        return EXIT_FAILURE;
+    } catch (const std::runtime_error& e) {
+        std::cerr << "Runtime error: " << e.what() << std::endl;
+        return EXIT_FAILURE;
+    } catch (const std::exception& e) {
+        std::cerr << "Exception: " << e.what() << std::endl;
+        return EXIT_FAILURE;
+    } catch (...) {
+        std::cerr << "Unknown error occurred." << std::endl;
+        return EXIT_FAILURE;
     }
 
-    std::string method = argv[1];
-    double n = std::stod(argv[2]);
-    double a = std::stod(argv[3]);
-    double b = std::stod(argv[4]);
-    double c1 = std::stod(argv[5]);
-    double c2 = std::stod(argv[6]);
-    double c3 = std::stod(argv[7]);
-    std::vector<double> coefficients = {c1, c2, c3};
-    
-    PolynomialFunction poly(coefficients);
-    std::vector<double> points, weights;
-
-    if (method == "gauss_legendre") {
-        points = gaussLegendrePoints(n);
-        weights = gaussLegendreWeights(n);
-    } else if (method == "gauss_lobatto") {
-        points = gaussLobattoPoints(n);
-        weights = gaussLobattoWeights(n);
-    } else if (method == "chebychev") {
-        points = generateChebyshevFirstKindPoints(n);
-        weights = generateChebyshevFirstKindWeights(n);
-    }
-    else {
-        std::cerr << "Unknown integration method!\n";
-        return 1;
-    }
-
-    NumericalIntegrator integrator(weights, points);
-    double result = integrator.integrate(poly, a, b);
-
-    std::cout << "Integral result: " << result << std::endl;
-    return 0;
+    return EXIT_SUCCESS;
 }
