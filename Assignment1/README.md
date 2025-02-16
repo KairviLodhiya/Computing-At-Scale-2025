@@ -32,6 +32,6 @@ The integration methods use precomputed points and weights for the respective qu
 4. Use make command.
 5. Run the program in this format:
     ./PolynomialIntegrate <method> <num_points> <a> <b> <coeff1> <coeff2> <coeff3>
-    (method - gauss_legendre, gauss_lobbato, chebychev)
+    (method - gauss_legendre, gauss_lobatto, chebychev)
 6. Run the unit tests:
     ./unit_tests
